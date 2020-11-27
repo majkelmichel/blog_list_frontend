@@ -17,13 +17,28 @@ const App = () => {
 		);
 	}, []);
 
+	useEffect(() => {
+		const loggedIn = window.localStorage.getItem('loggedInUser');
+		if (loggedIn) {
+			setUser(JSON.parse(loggedIn));
+		}
+	}, []);
+
+	const logout = () => {
+		window.localStorage.clear();
+		setUser(null);
+	}
+
 	return (
 		<>
 		{user === null ?
 			<Login username={username} setUsername={setUsername} setUser={setUser} setPassword={setPassword} password={password} /> :
 			<div>
 				<h2>blogs</h2>
-				<p>{user.username} logged in</p>
+				<p>
+					{user.username} logged in
+					<button onClick={() => logout()}>logout</button>
+				</p>
 				{blogs.map(blog =>
 					<Blog key={blog.id} blog={blog}/>,
 				)}
