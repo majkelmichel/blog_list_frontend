@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
+import Info from './Info';
 
 const BlogForm = ({ user, blogs, setBlogs }) => {
 	const [ title, setTitle ] = useState('');
 	const [ author, setAuthor ] = useState('');
 	const [ url, setUrl ] = useState('');
+	const [ info, setInfo ] = useState(null);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -16,14 +18,19 @@ const BlogForm = ({ user, blogs, setBlogs }) => {
 		};
 		const createdBlog = await blogService.createBlog(data, user.token);
 		setBlogs(blogs.concat(createdBlog.data));
+		setInfo(`a new blog ${title} by ${author} has been added`)
 		setTitle('');
 		setAuthor('');
 		setUrl('');
+		setTimeout(() => {
+			setInfo(null)
+		}, 3000);
 	}
 
 	return (
 		<>
 			<h2>create new</h2>
+			<Info message={info} color='green' />
 			<form onSubmit={handleSubmit}>
 				title: <input type='text' value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
 				author: <input type='text' value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
