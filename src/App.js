@@ -39,6 +39,16 @@ const App = () => {
 		setBlogs(blogs.concat(createdBlog.data));
 	};
 
+	const addLike = async (blog, id) => {
+		await blogService.like(blog, id);
+		const index = blogs.findIndex(blog => blog.id === id);
+		let items = [...blogs];
+		let item = {...items[index]}
+		item.likes = blog.likes;
+		items[index] = item;
+		setBlogs(items);
+	}
+
 	return (
 		<>
 			{user === null ?
@@ -54,7 +64,7 @@ const App = () => {
 						<BlogForm user={user} blogs={blogs} setBlogs={setBlogs} addBlog={createBlog}/>
 					</Togglable>
 					{blogs.map(blog =>
-						<Blog key={blog.id} blog={blog}/>,
+						<Blog key={blog.id} title={blog.title} url={blog.url} author={blog.author} likes={blog.likes} id={blog.id} userId={blog.user.id} addLike={addLike}/>
 					)}
 				</div>
 
