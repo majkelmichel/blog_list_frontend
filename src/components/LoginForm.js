@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import loginService from '../services/login';
+import PropTypes from 'prop-types';
 
 import Info from './Info';
 
 const Login = ({ setUser, username, password, setUsername, setPassword }) => {
 
-	const [err, setErr] = useState('');
+	const [ err, setErr ] = useState('');
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
 
 		try {
 			const user = await loginService.login({
-				username, password
+				username, password,
 			});
 			setUser(user);
 			window.localStorage.setItem('loggedInUser', JSON.stringify(user));
@@ -21,15 +22,15 @@ const Login = ({ setUser, username, password, setUsername, setPassword }) => {
 		} catch (ex) {
 			setErr('wrong credentials');
 			setTimeout(() => {
-				setErr(null)
+				setErr(null);
 			}, 3000);
 		}
-	}
+	};
 
 	return (
 		<>
 			<h2>login</h2>
-			<Info color='red' message={err} />
+			<Info color='red' message={err}/>
 			<form onSubmit={handleLogin}>
 				<div>
 					username
@@ -52,7 +53,15 @@ const Login = ({ setUser, username, password, setUsername, setPassword }) => {
 				<button type='submit'>login</button>
 			</form>
 		</>
-	)
-}
+	);
+};
+
+Login.propTypes = {
+	setUser: PropTypes.func.isRequired,
+	username: PropTypes.string.isRequired,
+	password: PropTypes.string.isRequired,
+	setUsername: PropTypes.func.isRequired,
+	setPassword: PropTypes.func.isRequired,
+};
 
 export default Login;

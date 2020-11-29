@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Info from './Info';
+import PropTypes from 'prop-types';
 
 const BlogForm = ({ addBlog }) => {
 	const [ title, setTitle ] = useState('');
@@ -17,19 +18,19 @@ const BlogForm = ({ addBlog }) => {
 		};
 		addBlog(data);
 
-		setInfo(`a new blog ${title} by ${author} has been added`)
+		setInfo(`a new blog ${title} by ${author} has been added`);
 		setTitle('');
 		setAuthor('');
 		setUrl('');
 		setTimeout(() => {
-			setInfo(null)
+			setInfo(null);
 		}, 3000);
-	}
+	};
 
 	return (
 		<>
 			<h2>create new</h2>
-			<Info message={info} color='green' />
+			<Info message={info} color='green'/>
 			<form onSubmit={handleSubmit}>
 				title: <input type='text' value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
 				author: <input type='text' value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
@@ -37,7 +38,11 @@ const BlogForm = ({ addBlog }) => {
 				<button type='submit'>create</button>
 			</form>
 		</>
-	)
-}
+	);
+};
+
+BlogForm.propTypes = {
+	addBlog: PropTypes.func.isRequired,
+};
 
 export default BlogForm;

@@ -42,8 +42,8 @@ const App = () => {
 	const addLike = async (blog, id) => {
 		await blogService.like(blog, id);
 		const index = blogs.findIndex(blog => blog.id === id);
-		let items = [...blogs];
-		let item = {...items[index]}
+		let items = [ ...blogs ];
+		let item = { ...items[index] };
 		item.likes = blog.likes;
 		items[index] = item;
 		setBlogs(items);
@@ -52,13 +52,18 @@ const App = () => {
 	const removeBlog = async (blogId) => {
 		await blogService.deleteBlog(blogId, user.token);
 		setBlogs(blogs.filter(blog => blog.id !== blogId));
-	}
+	};
 
 	return (
 		<>
 			{user === null ?
-				<Login username={username} setUsername={setUsername} setUser={setUser} setPassword={setPassword}
-				       password={password}/> :
+				<Login
+					username={username}
+					setUsername={setUsername}
+					setUser={setUser}
+					setPassword={setPassword}
+					password={password}
+				/> :
 				<div>
 					<h2>blogs</h2>
 					<p>
@@ -80,7 +85,7 @@ const App = () => {
 							addLike={addLike}
 							loggedInId={user.id}
 							removeBlog={removeBlog}
-						/>
+						/>,
 					)}
 				</div>
 

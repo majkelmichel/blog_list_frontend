@@ -27,6 +27,6 @@ const deleteBlog = async (id, token) => {
 		},
 	};
 	return axios.delete(`${baseUrl}/${id}`, config);
-}
+};
 
 export default { getAll, createBlog, like, deleteBlog };
