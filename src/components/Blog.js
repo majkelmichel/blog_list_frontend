@@ -25,6 +25,12 @@ const Blog = (props) => {
 			user: props.userId,
 		};
 		props.addLike(data, props.id);
+	};
+
+	const handleDelete = async () => {
+		if (window.confirm(`Remove blog ${props.title} by ${props.author}?`)) {
+			props.removeBlog(props.id);
+		}
 	}
 
 	return (
@@ -36,6 +42,7 @@ const Blog = (props) => {
 				{props.url}<br/>
 				likes: {props.likes}<button onClick={handleLike}>like</button><br/>
 				{props.author}<br/>
+				{props.loggedInId === props.userId ? <button onClick={handleDelete}>delete</button> : null}
 			</div>
 		</div>
 	)

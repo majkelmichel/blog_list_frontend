@@ -47,6 +47,11 @@ const App = () => {
 		item.likes = blog.likes;
 		items[index] = item;
 		setBlogs(items);
+	};
+
+	const removeBlog = async (blogId) => {
+		await blogService.deleteBlog(blogId, user.token);
+		setBlogs(blogs.filter(blog => blog.id !== blogId));
 	}
 
 	return (
@@ -64,7 +69,18 @@ const App = () => {
 						<BlogForm user={user} blogs={blogs} setBlogs={setBlogs} addBlog={createBlog}/>
 					</Togglable>
 					{blogs.sort((prev, curr) => curr.likes - prev.likes).map(blog =>
-						<Blog key={blog.id} title={blog.title} url={blog.url} author={blog.author} likes={blog.likes} id={blog.id} userId={blog.user.id} addLike={addLike}/>
+						<Blog
+							key={blog.id}
+							title={blog.title}
+							url={blog.url}
+							author={blog.author}
+							likes={blog.likes}
+							id={blog.id}
+							userId={blog.user.id || user.id}
+							addLike={addLike}
+							loggedInId={user.id}
+							removeBlog={removeBlog}
+						/>
 					)}
 				</div>
 
