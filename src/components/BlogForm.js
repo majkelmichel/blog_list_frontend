@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
 import Info from './Info';
 
-const BlogForm = ({ user, blogs, setBlogs }) => {
+const BlogForm = ({ addBlog }) => {
 	const [ title, setTitle ] = useState('');
 	const [ author, setAuthor ] = useState('');
 	const [ url, setUrl ] = useState('');
@@ -16,8 +15,8 @@ const BlogForm = ({ user, blogs, setBlogs }) => {
 			author,
 			url,
 		};
-		const createdBlog = await blogService.createBlog(data, user.token);
-		setBlogs(blogs.concat(createdBlog.data));
+		addBlog(data);
+
 		setInfo(`a new blog ${title} by ${author} has been added`)
 		setTitle('');
 		setAuthor('');
