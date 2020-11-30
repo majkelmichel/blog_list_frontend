@@ -22,7 +22,7 @@ const Info = ({ message, color }) => {
 };
 
 Info.propTypes = {
-	message: PropTypes.string.isRequired,
+	message: PropTypes.string,
 	color: PropTypes.string.isRequired,
 };
 

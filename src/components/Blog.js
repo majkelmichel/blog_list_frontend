@@ -11,11 +11,6 @@ const Blog = (props) => {
 	const showDetails = { display: detailed ? '' : 'none' };
 	const label = detailed ? 'hide' : 'view';
 
-	const style = {
-		border: 'solid 2px black',
-		padding: '10px',
-		margin: '5px',
-	};
 
 	const handleLike = () => {
 		const data = {
@@ -23,7 +18,7 @@ const Blog = (props) => {
 			author: props.author,
 			title: props.title,
 			url: props.url,
-			user: props.userId,
+			user: props.userId
 		};
 		props.addLike(data, props.id);
 	};
@@ -35,17 +30,16 @@ const Blog = (props) => {
 	};
 
 	return (
-		<div style={style}>
+		<div className='Blog-border'>
 			<div>
-				{props.title}
+				{props.title} - {props.author}
 				<button onClick={toggleDetails}>{label}</button>
 			</div>
-			<div style={showDetails}>
+			<div className='details' style={showDetails}>
 				{props.url}<br/>
 				likes: {props.likes}
 				<button onClick={handleLike}>like</button>
 				<br/>
-				{props.author}<br/>
 				{props.loggedInId === props.userId ? <button onClick={handleDelete}>delete</button> : null}
 			</div>
 		</div>
@@ -58,10 +52,10 @@ Blog.propTypes = {
 	title: PropTypes.string.isRequired,
 	url: PropTypes.string.isRequired,
 	userId: PropTypes.string.isRequired,
-	addLike: PropTypes.string.isRequired,
+	addLike: PropTypes.func.isRequired,
 	id: PropTypes.string.isRequired,
 	loggedInId: PropTypes.string.isRequired,
-	removeBlog: PropTypes.func.isRequired,
+	removeBlog: PropTypes.func.isRequired
 };
 
 export default Blog;

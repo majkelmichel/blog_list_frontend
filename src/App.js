@@ -6,6 +6,7 @@ import blogService from './services/blogs';
 import Togglable from './components/Togglable';
 import BlogForm from './components/BlogForm';
 import Blog from './components/Blog';
+import './App.css';
 
 const App = () => {
 	const [ blogs, setBlogs ] = useState([]);
@@ -76,15 +77,11 @@ const App = () => {
 					{blogs.sort((prev, curr) => curr.likes - prev.likes).map(blog =>
 						<Blog
 							key={blog.id}
-							title={blog.title}
-							url={blog.url}
-							author={blog.author}
-							likes={blog.likes}
-							id={blog.id}
 							userId={blog.user.id || user.id}
 							addLike={addLike}
 							loggedInId={user.id}
 							removeBlog={removeBlog}
+							{...blog}
 						/>,
 					)}
 				</div>
