@@ -5,6 +5,8 @@ import Blog from './Blog';
 
 describe('<Blog />', () => {
 	let component;
+	const mockHandler = jest.fn();
+	const likeHandler = jest.fn();
 
 	beforeEach(() => {
 		const blog = {
@@ -13,9 +15,9 @@ describe('<Blog />', () => {
 			likes: 0,
 			url: 'http://testurl.test'
 		};
-		const mockHandler = jest.fn();
+
 		component = render(
-			<Blog id='test' addLike={mockHandler} loggedInId='12' removeBlog={mockHandler} userId='12' {...blog} />
+			<Blog id='test' addLike={likeHandler} loggedInId='12' removeBlog={mockHandler} userId='12' {...blog} />
 		);
 	});
 
@@ -46,5 +48,12 @@ describe('<Blog />', () => {
 
 		const detailed = component.container.querySelector('.details');
 		expect(detailed).not.toHaveStyle('display: none;');
+	});
+
+	test('when like button is clicked twice the handler for likes is called twice', () => {
+		const likeButton = component.getByText('like');
+		fireEvent.click(likeButton);
+		fireEvent.click(likeButton);
+		expect(likeHandler.mock.calls).toHaveLength(2);
 	});
 });
