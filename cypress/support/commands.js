@@ -32,6 +32,13 @@ Cypress.Commands.add('addUser', ({ username, password, name }) => {
 	});
 });
 
-// Cypress.Commands.add('login', ({ username, password }) => {
-//
-// })
+Cypress.Commands.add('login', ({ username, password }) => {
+	cy.request({
+		url: 'http://localhost:3001/api/login',
+		method: 'POST',
+		body: { username, password }
+	}).then(({ body }) => {
+		localStorage.setItem('loggedInUser', JSON.stringify(body));
+		cy.visit('http://localhost:3000');
+	});
+});

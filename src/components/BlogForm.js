@@ -31,7 +31,7 @@ const BlogForm = ({ addBlog }) => {
 		<>
 			<h2>create new</h2>
 			<Info message={info} color='green'/>
-			<form onSubmit={handleSubmit}>
+			<form id='blog-form' onSubmit={handleSubmit}>
 				title: <input id='title' type='text' value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
 				author: <input id='author' type='text' value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
 				url: <input id='url' type='text' value={url} onChange={({ target }) => setUrl(target.value)}/><br/>
