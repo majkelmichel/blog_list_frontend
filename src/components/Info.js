@@ -5,14 +5,9 @@ const Info = ({ message, color }) => {
 
 	if (message) {
 		return (
-			<div style={{
+			<div className='error' style={{
 				border: `solid 5px ${color}`,
-				color: color,
-				borderRadius: '5px',
-				padding: '10px',
-				backgroundColor: 'lightgrey',
-				fontSize: '1.5em',
-				margin: '10px 0',
+				color: color
 			}}>
 				{message}
 			</div>

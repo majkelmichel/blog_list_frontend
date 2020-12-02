@@ -54,7 +54,6 @@ const App = () => {
 		await blogService.deleteBlog(blogId, user.token);
 		setBlogs(blogs.filter(blog => blog.id !== blogId));
 	};
-	console.log(blogs);
 
 	return (
 		<>

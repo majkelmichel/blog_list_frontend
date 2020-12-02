@@ -42,3 +42,11 @@
     padding: 10px;
     margin: 5px;
 }
+
+.error {
+    border-radius: 5px;
+    padding: 10px;
+    background-color: lightgrey;
+    font-size: 1.5em;
+    margin: 10px 0;
+}
