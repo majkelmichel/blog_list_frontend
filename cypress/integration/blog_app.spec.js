@@ -16,7 +16,7 @@ describe('Blog app', function () {
 	describe('Login', function () {
 		beforeEach(function () {
 			cy.visit('http://localhost:3000');
-		})
+		});
 		it('succeeds with correct credentials', function () {
 			cy.get('#username').type('cypress');
 			cy.get('#password').type('cypressSecret');
@@ -31,7 +31,7 @@ describe('Blog app', function () {
 			cy.get('#login-button').click();
 
 			cy.get('.error').should('contain', 'wrong credentials')
-				.and('have.css', 'color', 'rgb(255, 0, 0)')
+				.and('have.css', 'color', 'rgb(255, 0, 0)');
 
 			cy.get('html').should('not.contain', 'cypress loged in');
 		});
@@ -39,7 +39,7 @@ describe('Blog app', function () {
 
 	describe('When logged in', function () {
 		beforeEach(function () {
-			cy.login({ username: 'cypress', password: 'cypressSecret'});
+			cy.login({ username: 'cypress', password: 'cypressSecret' });
 		});
 
 		it('A blog can be created', function () {
@@ -53,9 +53,9 @@ describe('Blog app', function () {
 		});
 	});
 
-	describe.only('When there is a blog created', function () {
+	describe('When there is a blog created', function () {
 		beforeEach(function () {
-			cy.login({ username: 'cypress', password: 'cypressSecret'});
+			cy.login({ username: 'cypress', password: 'cypressSecret' });
 			cy.createBlog({
 				title: 'test blog',
 				author: 'tester',
@@ -63,8 +63,8 @@ describe('Blog app', function () {
 			});
 		});
 
-		it('the blog is created' ,function () {
-			cy.get('html').should('contain', 'test blog')
+		it('the blog is created', function () {
+			cy.get('html').should('contain', 'test blog');
 		});
 
 		it('the blog can be liked', function () {
@@ -77,6 +77,43 @@ describe('Blog app', function () {
 			cy.get('#blogs-container').contains('view').click();
 			cy.get('#blogs-container').contains('delete').click();
 			cy.get('#blogs-container').should('not.contain', 'test blog');
+		});
+	});
+
+	describe('When there are multiple blogs', function () {
+		beforeEach(function () {
+			cy.login({ username: 'cypress', password: 'cypressSecret' });
+			cy.createBlog({
+				title: 'test blog 1',
+				author: 'tester',
+				url: 'placeholder',
+				likes: 20
+			});
+			cy.createBlog({
+				title: 'test blog 2',
+				author: 'tester',
+				url: 'placeholder',
+				likes: 25
+			});
+			cy.createBlog({
+				title: 'test blog 3',
+				author: 'tester',
+				url: 'placeholder',
+				likes: 10
+			});
+			cy.createBlog({
+				title: 'test blog 4',
+				author: 'tester',
+				url: 'placeholder'
+			});
+		});
+
+		it('blogs are sorted by likes', function () {
+			let prev = Number.MAX_VALUE;
+			cy.get('.likes').each(($el) => {
+				expect(Boolean(Number($el.text() <= Number(prev)))).to.be.true;
+				prev = Number($el.text());
+			});
 		});
 	});
 });

@@ -37,7 +37,7 @@ const Blog = (props) => {
 			</div>
 			<div className='details' style={showDetails}>
 				{props.url}<br/>
-				likes: {props.likes}
+				likes: <span className='likes'>{props.likes}</span>
 				<button onClick={handleLike}>like</button>
 				<br/>
 				{props.loggedInId === props.userId ? <button onClick={handleDelete}>delete</button> : null}
