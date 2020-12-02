@@ -52,4 +52,25 @@ describe('Blog app', function () {
 			cy.get('html').should('contain', 'Testing blog');
 		});
 	});
+
+	describe.only('When there is a blog created', function () {
+		beforeEach(function () {
+			cy.login({ username: 'cypress', password: 'cypressSecret'});
+			cy.createBlog({
+				title: 'test blog',
+				author: 'tester',
+				url: 'placeholder'
+			});
+		});
+
+		it('the blog is created' ,function () {
+			cy.get('html').should('contain', 'test blog')
+		});
+
+		it('the blog can be liked', function () {
+			cy.get('#blogs-container').contains('view').click();
+			cy.get('#blogs-container').contains('like').click();
+			cy.get('#blogs-container').contains('likes: 1');
+		});
+	});
 });
