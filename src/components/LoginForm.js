@@ -28,7 +28,7 @@ const Login = ({ setUser, username, password, setUsername, setPassword }) => {
 	};
 
 	return (
-		<>
+		<div id='login-form'>
 			<h2>login</h2>
 			<Info color='red' message={err}/>
 			<form onSubmit={handleLogin}>
@@ -52,7 +52,7 @@ const Login = ({ setUser, username, password, setUsername, setPassword }) => {
 				</div>
 				<button type='submit'>login</button>
 			</form>
-		</>
+		</div>
 	);
 };
 
