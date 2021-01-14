@@ -9,7 +9,7 @@ import Login from './components/LoginForm';
 import Notification from './components/Notification';
 import Home from './components/Home';
 
-import userService from './services/users'
+import userService from './services/users';
 
 import {
 	Switch,
@@ -21,6 +21,7 @@ import {
 import Users from './components/Users';
 import LoginStatus from './components/LoginStatus';
 import UserView from './components/UserView';
+import BlogView from './components/BlogView';
 
 const App = () => {
 	const [ users, setUsers] = useState([]);
@@ -52,6 +53,13 @@ const App = () => {
 		users.find(user => user.id === match.params.id) :
 		null;
 
+	const blogs = useSelector(state => state.blogs);
+
+	const blogMatch = useRouteMatch('/blogs/:id');
+	const blog = blogMatch ?
+		blogs.find(blog => blog.id === blogMatch.params.id) :
+		null;
+
 	return (
 		<>
 			<Notification/>
@@ -59,6 +67,9 @@ const App = () => {
 			<Link to={'/'}>home</Link> <Link to={'/users'}>users</Link>
 			<LoginStatus user={loggedInUser}/>
 			<Switch>
+				<Route path={'/blogs/:id'}>
+					<BlogView blog={blog} loggedIn={loggedInUser}/>
+				</Route>
 				<Route path={'/users/:id'}>
 					<UserView user={user}/>
 				</Route>
