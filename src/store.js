@@ -4,9 +4,11 @@ import thunk from 'redux-thunk';
 
 // Reducers
 import notificationReducer from './reducers/notificationReducer';
+import blogsReducer from './reducers/blogsReducer';
 
 const reducer = combineReducers({
 	notification: notificationReducer,
+	blogs: blogsReducer
 });
 
 const store = createStore(reducer, composeWithDevTools(
