@@ -1,36 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import loginService from '../services/login';
 import PropTypes from 'prop-types';
 
-import Info from './Info';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '../reducers/notificationReducer';
 
 const Login = ({ setUser, username, password, setUsername, setPassword }) => {
-
-	const [ err, setErr ] = useState('');
+	const dispatch = useDispatch();
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
 
 		try {
 			const user = await loginService.login({
-				username, password,
+				username, password
 			});
 			setUser(user);
 			window.localStorage.setItem('loggedInUser', JSON.stringify(user));
 			setUsername('');
 			setPassword('');
 		} catch (ex) {
-			setErr('wrong credentials');
-			setTimeout(() => {
-				setErr(null);
-			}, 3000);
+			dispatch(setNotification('wrong credentials', 'red'));
 		}
 	};
 
 	return (
 		<div id='login-form'>
 			<h2>login</h2>
-			<Info color='red' message={err}/>
 			<form onSubmit={handleLogin}>
 				<div>
 					username
@@ -63,7 +59,7 @@ Login.propTypes = {
 	username: PropTypes.string.isRequired,
 	password: PropTypes.string.isRequired,
 	setUsername: PropTypes.func.isRequired,
-	setPassword: PropTypes.func.isRequired,
+	setPassword: PropTypes.func.isRequired
 };
 
 export default Login;

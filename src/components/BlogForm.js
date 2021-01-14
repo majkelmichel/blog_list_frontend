@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import Info from './Info';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '../reducers/notificationReducer';
 
 const BlogForm = ({ addBlog }) => {
 	const [ title, setTitle ] = useState('');
 	const [ author, setAuthor ] = useState('');
 	const [ url, setUrl ] = useState('');
-	const [ info, setInfo ] = useState(null);
+
+	const dispatch = useDispatch();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -18,19 +20,15 @@ const BlogForm = ({ addBlog }) => {
 		};
 		addBlog(data);
 
-		setInfo(`a new blog ${title} by ${author} has been added`);
+		dispatch(setNotification(`a new blog ${title} by ${author} has been added`, 'green'));
 		setTitle('');
 		setAuthor('');
 		setUrl('');
-		setTimeout(() => {
-			setInfo(null);
-		}, 3000);
 	};
 
 	return (
 		<>
 			<h2>create new</h2>
-			<Info message={info} color='green'/>
 			<form id='blog-form' onSubmit={handleSubmit}>
 				title: <input id='title' type='text' value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
 				author: <input id='author' type='text' value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>

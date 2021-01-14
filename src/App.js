@@ -7,6 +7,7 @@ import Togglable from './components/Togglable';
 import BlogForm from './components/BlogForm';
 import Blog from './components/Blog';
 import './App.css';
+import Notification from './components/Notification';
 
 const App = () => {
 	const [ blogs, setBlogs ] = useState([]);
@@ -57,6 +58,7 @@ const App = () => {
 
 	return (
 		<>
+			<Notification/>
 			{user === null ?
 				<Login
 					username={username}
