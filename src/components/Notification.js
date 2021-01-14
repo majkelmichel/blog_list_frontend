@@ -8,9 +8,8 @@ const Notification = () => {
 	if (notification === null) {
 		return null;
 	}
-	console.log(notification);
-	const color = notification.status;
 
+	const color = notification.status;
 	const style = {
 		border: `solid 5px ${color}`,
 		borderRadius: 5,

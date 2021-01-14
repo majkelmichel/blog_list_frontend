@@ -17,7 +17,7 @@ const notificationReducer = (state = initialState, action) => {
 	}
 };
 
-export const setNotification = (content, status, time = 30) => {
+export const setNotification = (content, status, time = 3) => {
 	const id = ++notificationId;
 	return async dispatch => {
 		dispatch({

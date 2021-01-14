@@ -6,9 +6,6 @@ import { deleteBlog, likeBlog } from '../reducers/blogsReducer';
 
 const BlogList = ({ user }) => {
 	const blogs = useSelector(state => state.blogs);
-
-	console.log(blogs);
-
 	const dispatch = useDispatch();
 
 	if (blogs === null) {
@@ -21,7 +18,6 @@ const BlogList = ({ user }) => {
 
 	const removeBlog = async (blogId) => {
 		dispatch(deleteBlog(blogId, user));
-		// setBlogs(blogs.filter(blog => blog.id !== blogId));
 	};
 
 	return (

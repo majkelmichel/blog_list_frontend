@@ -1,69 +1,56 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './App.css';
+
+import { initializeBlogs } from './reducers/blogsReducer';
+import { initUser } from './reducers/userReducer';
 
 import Login from './components/LoginForm';
-
-import Togglable from './components/Togglable';
-import BlogForm from './components/BlogForm';
-import './App.css';
 import Notification from './components/Notification';
-import BlogList from './components/BlogList';
-import { createBlog, initializeBlogs } from './reducers/blogsReducer';
-import { useDispatch } from 'react-redux';
+import Home from './components/Home';
+
+import {
+	Switch,
+	Route,
+	Link,
+	Redirect
+} from 'react-router-dom';
+import Users from './components/Users';
+import LoginStatus from './components/LoginStatus';
 
 const App = () => {
-	// const [ blogs, setBlogs ] = useState([]);
-	const [ username, setUsername ] = useState('');
-	const [ password, setPassword ] = useState('');
-	const [ user, setUser ] = useState(null);
-
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(initializeBlogs())
-	}, [dispatch])
+		dispatch(initializeBlogs());
+	}, [ dispatch ]);
 
 	useEffect(() => {
 		const loggedIn = window.localStorage.getItem('loggedInUser');
 		if (loggedIn) {
-			setUser(JSON.parse(loggedIn));
+			dispatch(initUser(JSON.parse(loggedIn)));
 		}
-	}, []);
+	}, [ dispatch ]);
 
-	const logout = () => {
-		window.localStorage.clear();
-		setUser(null);
-	};
-
-	const blogFormRef = useRef();
-
-	const addBlog = async (blog) => {
-		blogFormRef.current.toggleVisibility();
-		dispatch(createBlog(blog, user));
-	};
+	const user = useSelector(state => state.user);
 
 	return (
 		<>
 			<Notification/>
-			{user === null ?
-				<Login
-					username={username}
-					setUsername={setUsername}
-					setUser={setUser}
-					setPassword={setPassword}
-					password={password}
-				/> :
-				<div>
-					<h2>blogs</h2>
-					<p>
-						{user.username} logged in
-						<button onClick={() => logout()}>logout</button>
-					</p>
-					<Togglable buttonLabel='new blog' ref={blogFormRef}>
-						<BlogForm user={user} addBlog={addBlog}/>
-					</Togglable>
-					<BlogList user={user}/>
-				</div>
-			}
+			<h2>blogs</h2>
+			<Link to={'/'}>home</Link> <Link to={'/users'}>users</Link>
+			<LoginStatus user={user}/>
+			<Switch>
+				<Route path={'/users'}>
+					{user ? <Users/> : <Redirect to={'/'}/>}
+				</Route>
+				<Route path={'/'}>
+					{user === null ?
+						<Login/> :
+						<Home user={user}/>
+					}
+				</Route>
+			</Switch>
 		</>
 	);
 };

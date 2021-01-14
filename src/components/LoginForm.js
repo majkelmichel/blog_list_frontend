@@ -1,27 +1,21 @@
-import React from 'react';
-import loginService from '../services/login';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
-import { setNotification } from '../reducers/notificationReducer';
+import { loginUser } from '../reducers/userReducer';
 
-const Login = ({ setUser, username, password, setUsername, setPassword }) => {
+const Login = () => {
+	const [ username, setUsername ] = useState('');
+	const [ password, setPassword ] = useState('');
+
 	const dispatch = useDispatch();
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
 
-		try {
-			const user = await loginService.login({
-				username, password
-			});
-			setUser(user);
-			window.localStorage.setItem('loggedInUser', JSON.stringify(user));
-			setUsername('');
-			setPassword('');
-		} catch (ex) {
-			dispatch(setNotification('wrong credentials', 'red'));
-		}
+		dispatch(loginUser(username, password));
+		setUsername('');
+		setPassword('');
+
 	};
 
 	return (
@@ -52,14 +46,6 @@ const Login = ({ setUser, username, password, setUsername, setPassword }) => {
 			</form>
 		</div>
 	);
-};
-
-Login.propTypes = {
-	setUser: PropTypes.func.isRequired,
-	username: PropTypes.string.isRequired,
-	password: PropTypes.string.isRequired,
-	setUsername: PropTypes.func.isRequired,
-	setPassword: PropTypes.func.isRequired
 };
 
 export default Login;
