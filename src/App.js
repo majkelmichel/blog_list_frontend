@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 
@@ -9,16 +9,22 @@ import Login from './components/LoginForm';
 import Notification from './components/Notification';
 import Home from './components/Home';
 
+import userService from './services/users'
+
 import {
 	Switch,
 	Route,
 	Link,
-	Redirect
+	Redirect,
+	useRouteMatch
 } from 'react-router-dom';
 import Users from './components/Users';
 import LoginStatus from './components/LoginStatus';
+import UserView from './components/UserView';
 
 const App = () => {
+	const [ users, setUsers] = useState([]);
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -32,22 +38,37 @@ const App = () => {
 		}
 	}, [ dispatch ]);
 
-	const user = useSelector(state => state.user);
+	useEffect(() => {
+		userService.getAll()
+			.then(res => {
+				setUsers(res.data);
+			});
+	});
+
+	const loggedInUser = useSelector(state => state.user);
+
+	const match = useRouteMatch('/users/:id');
+	const user = match ?
+		users.find(user => user.id === match.params.id) :
+		null;
 
 	return (
 		<>
 			<Notification/>
 			<h2>blogs</h2>
 			<Link to={'/'}>home</Link> <Link to={'/users'}>users</Link>
-			<LoginStatus user={user}/>
+			<LoginStatus user={loggedInUser}/>
 			<Switch>
+				<Route path={'/users/:id'}>
+					<UserView user={user}/>
+				</Route>
 				<Route path={'/users'}>
-					{user ? <Users/> : <Redirect to={'/'}/>}
+					{loggedInUser ? <Users/> : <Redirect to={'/'}/>}
 				</Route>
 				<Route path={'/'}>
-					{user === null ?
+					{loggedInUser === null ?
 						<Login/> :
-						<Home user={user}/>
+						<Home user={loggedInUser}/>
 					}
 				</Route>
 			</Switch>
