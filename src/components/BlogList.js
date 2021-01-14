@@ -1,30 +1,26 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Blog from './Blog';
-import blogService from '../services/blogs';
+import { deleteBlog, likeBlog } from '../reducers/blogsReducer';
 
 const BlogList = ({ user }) => {
 	const blogs = useSelector(state => state.blogs);
 
 	console.log(blogs);
 
+	const dispatch = useDispatch();
+
 	if (blogs === null) {
 		return null;
 	}
 
 	const addLike = async (blog, id) => {
-		await blogService.like(blog, id);
-		const index = blogs.findIndex(blog => blog.id === id);
-		let items = [ ...blogs ];
-		let item = { ...items[index] };
-		item.likes = blog.likes;
-		items[index] = item;
-		// setBlogs(items);
+		dispatch(likeBlog(blog, id));
 	};
 
 	const removeBlog = async (blogId) => {
-		await blogService.deleteBlog(blogId, user.token);
+		dispatch(deleteBlog(blogId, user));
 		// setBlogs(blogs.filter(blog => blog.id !== blogId));
 	};
 

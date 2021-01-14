@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import Login from './components/LoginForm';
 
-import blogService from './services/blogs';
 import Togglable from './components/Togglable';
 import BlogForm from './components/BlogForm';
 import './App.css';
@@ -17,11 +16,11 @@ const App = () => {
 	const [ password, setPassword ] = useState('');
 	const [ user, setUser ] = useState(null);
 
-	// useEffect(() => {
-	// 	blogService.getAll().then(blogs =>
-	// 		setBlogs(blogs)
-	// 	);
-	// }, []);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(initializeBlogs())
+	}, [dispatch])
 
 	useEffect(() => {
 		const loggedIn = window.localStorage.getItem('loggedInUser');
@@ -39,29 +38,8 @@ const App = () => {
 
 	const addBlog = async (blog) => {
 		blogFormRef.current.toggleVisibility();
-		const createdBlog = await blogService.createBlog(blog, user.token);
-		console.log(createdBlog.data);
-		dispatch(createBlog(createdBlog.data));
+		dispatch(createBlog(blog, user));
 	};
-
-	const dispatch = useDispatch();
-
-	dispatch(initializeBlogs())
-
-	// const addLike = async (blog, id) => {
-	// 	await blogService.like(blog, id);
-	// 	const index = blogs.findIndex(blog => blog.id === id);
-	// 	let items = [ ...blogs ];
-	// 	let item = { ...items[index] };
-	// 	item.likes = blog.likes;
-	// 	items[index] = item;
-	// 	setBlogs(items);
-	// };
-
-	// const removeBlog = async (blogId) => {
-	// 	await blogService.deleteBlog(blogId, user.token);
-	// 	setBlogs(blogs.filter(blog => blog.id !== blogId));
-	// };
 
 	return (
 		<>
@@ -83,18 +61,6 @@ const App = () => {
 					<Togglable buttonLabel='new blog' ref={blogFormRef}>
 						<BlogForm user={user} addBlog={addBlog}/>
 					</Togglable>
-					{/*<div id='blogs-container'>*/}
-					{/*	{blogs.sort((prev, curr) => curr.likes - prev.likes).map(blog =>*/}
-					{/*		<Blog*/}
-					{/*			key={blog.id}*/}
-					{/*			userId={blog.user.id || user.id}*/}
-					{/*			addLike={addLike}*/}
-					{/*			loggedInId={user.id}*/}
-					{/*			removeBlog={removeBlog}*/}
-					{/*			{...blog}*/}
-					{/*		/>*/}
-					{/*	)}*/}
-					{/*</div>*/}
 					<BlogList user={user}/>
 				</div>
 			}
