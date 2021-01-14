@@ -15,10 +15,10 @@ const LoginStatus = ({ user }) => {
 	}
 
 	return (
-		<p>
+		<span>
 			{user.username} logged in
 			<button onClick={logout}>logout</button>
-		</p>
+		</span>
 	);
 };
 

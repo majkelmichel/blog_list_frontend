@@ -14,14 +14,13 @@ import userService from './services/users';
 import {
 	Switch,
 	Route,
-	Link,
 	Redirect,
 	useRouteMatch
 } from 'react-router-dom';
 import Users from './components/Users';
-import LoginStatus from './components/LoginStatus';
 import UserView from './components/UserView';
 import BlogView from './components/BlogView';
+import Navigation from './components/Navigation';
 
 const App = () => {
 	const [ users, setUsers] = useState([]);
@@ -62,10 +61,9 @@ const App = () => {
 
 	return (
 		<>
+			<Navigation/>
 			<Notification/>
 			<h2>blogs</h2>
-			<Link to={'/'}>home</Link> <Link to={'/users'}>users</Link>
-			<LoginStatus user={loggedInUser}/>
 			<Switch>
 				<Route path={'/blogs/:id'}>
 					<BlogView blog={blog} loggedIn={loggedInUser}/>

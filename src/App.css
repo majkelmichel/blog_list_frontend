@@ -50,3 +50,9 @@
     font-size: 1.5em;
     margin: 10px 0;
 }
+
+.navbar {
+    background-color: lightgrey;
+    padding: 5px;
+    margin-bottom: 5px;
+}
