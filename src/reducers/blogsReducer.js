@@ -12,11 +12,19 @@ const blogsReducer = (state = initialState, action) => {
 
 		case 'LIKE_BLOG':
 			const index = state.findIndex(blog => blog.id === action.data.id);
+			console.log(action.data);
 			let items = [ ...state ];
 			let item = { ...items[index] };
 			item.likes = action.data.blog.likes;
 			items[index] = item;
 			return items;
+
+		case 'ADD_COMMENT':
+			const blogIndex = state.findIndex(blog => blog.id === action.data.id);
+			const blogs = [ ...state ];
+			blogs[blogIndex] = action.data;
+			return blogs;
+
 
 		case 'DELETE_BLOG':
 			return state.filter(blog => blog.id !== action.data);
@@ -65,8 +73,19 @@ export const deleteBlog = (blogId, user) => {
 		dispatch({
 			type: 'DELETE_BLOG',
 			data: blogId
-		})
-	}
-}
+		});
+	};
+};
+
+export const addComment = (blogId, comment) => {
+	return async dispatch => {
+		const blogWithAddedComment = await blogService.addComment(blogId, comment);
+		console.log(blogWithAddedComment);
+		dispatch({
+			type: 'ADD_COMMENT',
+			data: blogWithAddedComment.data
+		});
+	};
+};
 
 export default blogsReducer;

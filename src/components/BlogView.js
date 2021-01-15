@@ -1,9 +1,10 @@
-import React from 'react';
-import { deleteBlog, likeBlog } from '../reducers/blogsReducer';
+import React, { useState } from 'react';
+import { addComment, deleteBlog, likeBlog } from '../reducers/blogsReducer';
 import { useDispatch } from 'react-redux';
 
 const BlogView = ({ blog, loggedIn }) => {
 	const dispatch = useDispatch();
+	const [comment, setComment] = useState('');
 
 	if (!blog) {
 		return null;
@@ -30,6 +31,12 @@ const BlogView = ({ blog, loggedIn }) => {
 		}
 	};
 
+	const handleCommentSubmit = (e) => {
+		e.preventDefault();
+		dispatch(addComment(blog.id, comment));
+		setComment('');
+	}
+
 	return (
 		<div>
 			<h2>{blog.title}</h2>
@@ -40,9 +47,15 @@ const BlogView = ({ blog, loggedIn }) => {
 			added by {blog.author}
 			{loggedIn.id === blog.userId ? <button onClick={handleDelete}>delete</button> : null}
 			<h3>comments</h3>
+			<div>
+				<form onSubmit={handleCommentSubmit}>
+					<input value={comment} onChange={(e) => setComment(e.target.value)}/>
+					<button type='submit'>add comment</button>
+				</form>
+			</div>
 			<ul>
 				{blog.comments.length ?
-					blog.comments.map(comment => <li key={comment}>{comment}</li>) :
+					blog.comments.map((comment, i) => <li key={comment+i}>{comment}</li>) :
 					<p>no comments yet</p>
 				}
 			</ul>
