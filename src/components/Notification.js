@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import MuiAlert from '@material-ui/lab/Alert';
 
-const Notification = () => {
+const Notification = ({}) => {
 	const notification = useSelector(state => state.notification);
 
 
@@ -9,17 +10,10 @@ const Notification = () => {
 		return null;
 	}
 
-	const color = notification.status;
-	const style = {
-		border: `solid 5px ${color}`,
-		borderRadius: 5,
-		padding: 10,
-	};
-
 	return (
-		<div style={style}>
+		<MuiAlert severity={notification.status} elevation={6} variant='filled'>
 			{notification.content}
-		</div>
+		</MuiAlert>
 	);
 };
 

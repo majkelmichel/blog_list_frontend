@@ -1,5 +1,19 @@
-import React, { useState, useImperativeHandle } from 'react';
+import React, { useImperativeHandle, useState } from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import CancelIcon from '@material-ui/icons/Cancel';
+import AddIcon from '@material-ui/icons/Add';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => (
+	{
+		root: {
+			'& > *': {
+				marginTop: theme.spacing(1),
+				marginBottom: theme.spacing(1)
+			}
+		}
+	}));
 
 const Togglable = React.forwardRef((props, ref) => {
 	const [ visible, setVisible ] = useState(false);
@@ -13,18 +27,22 @@ const Togglable = React.forwardRef((props, ref) => {
 
 	useImperativeHandle(ref, () => {
 		return {
-			toggleVisibility,
+			toggleVisibility
 		};
 	});
 
+	const classes = useStyles();
+
 	return (
-		<div>
+		<div className={classes.root}>
 			<div style={hide}>
-				<button onClick={toggleVisibility}>{props.buttonLabel}</button>
+				<Button onClick={toggleVisibility} variant='contained' size='small' disableElevation
+				        startIcon={<AddIcon/>}>{props.buttonLabel}</Button>
 			</div>
 			<div style={show}>
 				{props.children}
-				<button onClick={toggleVisibility}>cancel</button>
+				<Button onClick={toggleVisibility} variant='contained' size='small' color='secondary'
+				        startIcon={<CancelIcon/>}>cancel</Button>
 			</div>
 		</div>
 	);
@@ -34,7 +52,7 @@ Togglable.displayName = 'Togglable';
 
 Togglable.propTypes = {
 	children: PropTypes.object.isRequired,
-	buttonLabel: PropTypes.string.isRequired,
+	buttonLabel: PropTypes.string.isRequired
 };
 
 export default Togglable;

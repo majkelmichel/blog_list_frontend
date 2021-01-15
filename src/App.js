@@ -11,21 +11,19 @@ import Home from './components/Home';
 
 import userService from './services/users';
 
-import {
-	Switch,
-	Route,
-	Redirect,
-	useRouteMatch
-} from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import Users from './components/Users';
 import UserView from './components/UserView';
 import BlogView from './components/BlogView';
 import Navigation from './components/Navigation';
+import { Container } from '@material-ui/core';
 
 const App = () => {
-	const [ users, setUsers] = useState([]);
+	const [ users, setUsers ] = useState([]);
 
 	const dispatch = useDispatch();
+
+	const loggedIn = JSON.parse(window.localStorage.getItem('loggedInUser'));
 
 	useEffect(() => {
 		dispatch(initializeBlogs());
@@ -43,7 +41,7 @@ const App = () => {
 			.then(res => {
 				setUsers(res.data);
 			});
-	});
+	}, []);
 
 	const loggedInUser = useSelector(state => state.user);
 
@@ -62,25 +60,26 @@ const App = () => {
 	return (
 		<>
 			<Navigation/>
-			<Notification/>
-			<h2>blogs</h2>
-			<Switch>
-				<Route path={'/blogs/:id'}>
-					<BlogView blog={blog} loggedIn={loggedInUser}/>
-				</Route>
-				<Route path={'/users/:id'}>
-					<UserView user={user}/>
-				</Route>
-				<Route path={'/users'}>
-					{loggedInUser ? <Users/> : <Redirect to={'/'}/>}
-				</Route>
-				<Route path={'/'}>
-					{loggedInUser === null ?
-						<Login/> :
-						<Home user={loggedInUser}/>
-					}
-				</Route>
-			</Switch>
+			<Container>
+				<Notification/>
+				<Switch>
+					<Route path={'/blogs/:id'}>
+						<BlogView blog={blog} loggedIn={loggedInUser}/>
+					</Route>
+					<Route path={'/users/:id'}>
+						<UserView user={user}/>
+					</Route>
+					<Route path={'/users'}>
+						{loggedIn ? <Users/> : <Redirect to={'/'}/>}
+					</Route>
+					<Route path={'/'}>
+						{loggedInUser === null ?
+							<Login/> :
+							<Home user={loggedInUser}/>
+						}
+					</Route>
+				</Switch>
+			</Container>
 		</>
 	);
 };
