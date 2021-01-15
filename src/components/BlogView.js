@@ -9,7 +9,7 @@ const BlogView = ({ blog, loggedIn }) => {
 		return null;
 	}
 
-	const addLike = async (blog, id) => {
+	const addLike = (blog, id) => {
 		dispatch(likeBlog(blog, id));
 	};
 
@@ -39,6 +39,13 @@ const BlogView = ({ blog, loggedIn }) => {
 			<br/>
 			added by {blog.author}
 			{loggedIn.id === blog.userId ? <button onClick={handleDelete}>delete</button> : null}
+			<h3>comments</h3>
+			<ul>
+				{blog.comments.length ?
+					blog.comments.map(comment => <li key={comment}>{comment}</li>) :
+					<p>no comments yet</p>
+				}
+			</ul>
 		</div>
 	)
 }
