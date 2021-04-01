@@ -13,3 +13,7 @@ Run `npm install` to install required dependencies
 ### Starting the development server
 
 Run `npm start`
+
+### Production build
+
+Run `npm run build` to get production build
