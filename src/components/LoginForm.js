@@ -50,6 +50,7 @@ const Login = () => {
 					label='password'
 					value={password}
 					onChange={({ target }) => setPassword(target.value)}
+					type='password'
 				/>
 				<br/>
 				<Button variant='contained' id='login-button' type='submit'>login</Button>
